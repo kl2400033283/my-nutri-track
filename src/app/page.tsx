@@ -203,9 +203,21 @@ export default function Home() {
 
           {showContentBlocks && (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              <Card className="h-48 w-64 border-none bg-black/50 shadow-lg" />
-              <Card className="h-48 w-64 border-none bg-black/50 shadow-lg" />
-              <Card className="h-48 w-64 border-none bg-black/50 shadow-lg" />
+              <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
+                <CardContent className="p-0">
+                  <h2 className="text-2xl font-bold text-white">CHILD</h2>
+                </CardContent>
+              </Card>
+              <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
+                <CardContent className="p-0">
+                  <h2 className="text-2xl font-bold text-white">ADULT</h2>
+                </CardContent>
+              </Card>
+              <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
+                <CardContent className="p-0">
+                  <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
+                </CardContent>
+              </Card>
             </div>
           )}
         </>
