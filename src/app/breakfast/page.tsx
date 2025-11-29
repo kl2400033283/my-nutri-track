@@ -9,28 +9,21 @@ import { useRouter } from 'next/navigation';
 import { calculateNutrients, CalculateNutrientsOutput } from '@/ai/flows/calculate-nutrients-flow';
 import { Loader2 } from 'lucide-react';
 import { dailyGoals } from '@/lib/utils';
-
-type DailyTotals = {
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-}
+import { useUser, useFirestore } from '@/firebase';
+import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { collection } from 'firebase/firestore';
 
 export default function BreakfastPage() {
   const router = useRouter();
   const [breakfastInput, setBreakfastInput] = useState('');
   const [nutrients, setNutrients] = useState<CalculateNutrientsOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [dailyTotals, setDailyTotals] = useState<DailyTotals>({ calories: 0, protein: 0, carbs: 0, fat: 0 });
   const [isClient, setIsClient] = useState(false);
+  const { user } = useUser();
+  const firestore = useFirestore();
 
   useEffect(() => {
     setIsClient(true);
-    const storedTotals = localStorage.getItem('dailyTotals');
-    if (storedTotals) {
-      setDailyTotals(JSON.parse(storedTotals));
-    }
   }, []);
 
   const handleCalculateNutrients = async () => {
@@ -41,24 +34,19 @@ export default function BreakfastPage() {
       const result = await calculateNutrients({ meal: breakfastInput, mealType: 'breakfast' });
       setNutrients(result);
 
-      const storedTotalsJSON = localStorage.getItem('dailyTotals');
-      const storedTotals: DailyTotals = storedTotalsJSON ? JSON.parse(storedTotalsJSON) : { calories: 0, protein: 0, carbs: 0, fat: 0 };
-      
-      const newTotals: DailyTotals = {
-        calories: storedTotals.calories + result.calories,
-        protein: storedTotals.protein + result.protein,
-        carbs: storedTotals.carbs + result.carbs,
-        fat: storedTotals.fat + result.fat,
-      };
-
-      setDailyTotals(newTotals);
-      if (isClient) {
-        localStorage.setItem('dailyTotals', JSON.stringify(newTotals));
+      if (user && firestore) {
+        const nutrientLog = {
+          date: new Date().toISOString(),
+          mealType: 'breakfast',
+          meal: breakfastInput,
+          ...result,
+        };
+        const nutrientLogsRef = collection(firestore, 'users', user.uid, 'nutrient_logs');
+        addDocumentNonBlocking(nutrientLogsRef, nutrientLog);
       }
 
     } catch (error) {
       console.error("Failed to calculate nutrients:", error);
-      // Optionally, show an error message to the user
     } finally {
       setIsLoading(false);
     }

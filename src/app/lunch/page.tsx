@@ -9,6 +9,10 @@ import { useRouter } from 'next/navigation';
 import { calculateNutrients, CalculateNutrientsOutput } from '@/ai/flows/calculate-nutrients-flow';
 import { Loader2 } from 'lucide-react';
 import { dailyGoals } from '@/lib/utils';
+import { useUser, useFirestore } from '@/firebase';
+import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { collection } from 'firebase/firestore';
+
 
 type DailyTotals = {
   calories: number;
@@ -24,13 +28,12 @@ export default function LunchPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [dailyTotals, setDailyTotals] = useState<DailyTotals>({ calories: 0, protein: 0, carbs: 0, fat: 0 });
   const [isClient, setIsClient] = useState(false);
+  const { user } = useUser();
+  const firestore = useFirestore();
 
   useEffect(() => {
     setIsClient(true);
-    const storedTotals = localStorage.getItem('dailyTotals');
-    if (storedTotals) {
-      setDailyTotals(JSON.parse(storedTotals));
-    }
+    // You might want to fetch and set daily totals from Firestore here if you implement that
   }, []);
 
   const handleCalculateNutrients = async () => {
@@ -41,16 +44,15 @@ export default function LunchPage() {
       const result = await calculateNutrients({ meal: lunchInput, mealType: 'lunch' });
       setNutrients(result);
 
-      const newTotals: DailyTotals = {
-        calories: dailyTotals.calories + result.calories,
-        protein: dailyTotals.protein + result.protein,
-        carbs: dailyTotals.carbs + result.carbs,
-        fat: dailyTotals.fat + result.fat,
-      };
-
-      setDailyTotals(newTotals);
-      if (isClient) {
-        localStorage.setItem('dailyTotals', JSON.stringify(newTotals));
+      if (user && firestore) {
+        const nutrientLog = {
+          date: new Date().toISOString(),
+          mealType: 'lunch',
+          meal: lunchInput,
+          ...result,
+        };
+        const nutrientLogsRef = collection(firestore, 'users', user.uid, 'nutrient_logs');
+        addDocumentNonBlocking(nutrientLogsRef, nutrientLog);
       }
 
     } catch (error) {
@@ -61,10 +63,10 @@ export default function LunchPage() {
   };
 
   const remaining = {
-    calories: dailyGoals.calories - dailyTotals.calories,
-    protein: dailyGoals.protein - dailyTotals.protein,
-    carbs: dailyGoals.carbs - dailyTotals.carbs,
-    fat: dailyGoals.fat - dailyTotals.fat,
+    calories: dailyGoals.calories - dailyTotals.calories - (nutrients?.calories || 0),
+    protein: dailyGoals.protein - dailyTotals.protein - (nutrients?.protein || 0),
+    carbs: dailyGoals.carbs - dailyTotals.carbs - (nutrients?.carbs || 0),
+    fat: dailyGoals.fat - dailyTotals.fat - (nutrients?.fat || 0),
   };
 
   if (!isClient) return null;

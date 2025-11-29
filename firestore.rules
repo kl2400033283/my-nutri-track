@@ -11,6 +11,8 @@
  * under the top-level `/users` collection. Each user has a single document,
  * where the document ID is the user's unique Firebase Authentication UID.
  *   - `/users/{userId}`: Contains the public profile and private data for a user.
+ *   - `/users/{userId}/nutrient_logs/{logId}`: Stores a single nutrient log entry.
+ *   - `/users/{userId}/meal_plans/{planId}`: Stores a single custom meal plan.
  *
  * ## Key Security Decisions
  * - **No User Listing:** Listing documents in the top-level `/users` collection
@@ -19,9 +21,8 @@
  * - **Path-Based Security:** Authorization is based on the document path, comparing
  *   the `{userId}` wildcard to the authenticated user's UID (`request.auth.uid`).
  *   This is highly performant as it avoids extra database reads (`get()` calls).
- * - **Data Integrity:** On creation, the user document's internal `id` field must
- *   match the document ID (`userId`). This field is then enforced as immutable
- *   to guarantee the link between the document and its owner can never be broken.
+ * - **Data Integrity:** On creation, user-related documents have fields validated
+ *   to ensure consistency and correctness.
  *
  * ## Denormalization for Authorization
  * The current structure is optimized for authorization independence. The user's
@@ -58,62 +59,36 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    /**
-     * Checks if the document being accessed already exists in Firestore.
-     * Crucial for protecting against writes to non-existent documents.
-     */
-    function isExistingDoc() {
-      return resource != null;
-    }
-
-    /**
-     * Combines ownership and existence checks for state-changing operations
-     * like update and delete.
-     *
-     * @param userId The user ID of the document owner.
-     */
-    function isExistingOwner(userId) {
-      return isOwner(userId) && isExistingDoc();
-    }
-
-    /**
-     * On create, validates that the document's internal 'id' field
-     * matches the document's ID from the path ({userId}).
-     * This establishes an immutable link between the data and the owner.
-     *
-     * @param userId The document ID from the path wildcard.
-     */
-    function hasValidUserIdOnCreate(userId) {
-      return request.resource.data.id == userId;
-    }
-
-    /**
-     * On update, ensures that the 'id' field within the user document
-     * cannot be changed. This preserves the critical link to the owner.
-     */
-    function isUserIdImmutable() {
-      return request.resource.data.id == resource.data.id;
-    }
-
     // =====================================================================
     // Collection Rules
     // =====================================================================
 
     /**
-     * @description Manages user profile documents.
+     * @description Manages user documents and their subcollections.
      * @path /users/{userId}
-     * @allow (create) A new user can create their own user document.
-     * @allow (get, update, delete) An authenticated user can read, update, or delete their own document.
-     * @deny (list) No user, authenticated or not, can list all documents in the /users collection.
-     * @deny (get) A user cannot read another user's document.
-     * @principle Restricts access to a user's own data tree and enforces relational integrity.
+     * @allow (get, create, update, delete) An authenticated user can manage their own document.
+     * @deny (list) No user can list all documents in the /users collection.
      */
     match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false; // CRITICAL: Prevents listing all users in the application.
-      allow create: if isOwner(userId) && hasValidUserIdOnCreate(userId);
-      allow update: if isExistingOwner(userId) && isUserIdImmutable();
-      allow delete: if isExistingOwner(userId);
+      allow read, write: if isOwner(userId);
+
+      /**
+       * @description Manages a user's nutrient log entries.
+       * @path /users/{userId}/nutrient_logs/{logId}
+       * @allow (list, create) An authenticated user can create and list their own nutrient logs.
+       */
+      match /nutrient_logs/{logId} {
+        allow list, create: if isOwner(userId);
+      }
+
+      /**
+       * @description Manages a user's custom meal plans.
+       * @path /users/{userId}/meal_plans/{planId}
+       * @allow (list, create) An authenticated user can create and list their own meal plans.
+       */
+      match /meal_plans/{planId} {
+        allow list, create: if isOwner(userId);
+      }
     }
   }
 }

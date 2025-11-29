@@ -2,15 +2,16 @@
 import { useState, useEffect } from "react";
 import { ArrowRight, GithubIcon, BookCopy, Baby, User, PersonStanding, Coffee, Utensils, Cookie, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Textarea } from "@/components/ui/textarea";
 import { generateMealPlan, GenerateMealPlanOutput } from '@/ai/flows/generate-meal-plan-flow';
+import { useAuth } from '@/firebase';
+import { initiateAnonymousSignIn, initiateEmailSignIn, initiateEmailSignUp } from '@/firebase/non-blocking-login';
+import { useUser } from "@/firebase/provider";
 
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -42,8 +43,6 @@ const SeniorIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function Home() {
   const [formView, setFormView] = useState('signin');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showContentBlocks, setShowContentBlocks] = useState(false);
   const [showMealPlannerDialog, setShowMealPlannerDialog] = useState(false);
   const [showCustomPlannerDialog, setShowCustomPlannerDialog] = useState(false);
@@ -54,34 +53,33 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPlan, setGeneratedPlan] = useState<GenerateMealPlanOutput | null>(null);
   const router = useRouter();
+  const auth = useAuth();
+  const { user, isUserLoading } = useUser();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     setIsClient(true);
-    const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
-    if (loggedInStatus) {
-      setIsLoggedIn(true);
+    if (user) {
       setShowContentBlocks(true);
+    } else {
+      setShowContentBlocks(false);
     }
-  }, []);
+  }, [user]);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('isLoggedIn', 'true');
-    setIsLoggedIn(true);
-    setShowSuccessDialog(true);
+    initiateEmailSignUp(auth, email, password);
   };
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('isLoggedIn', 'true');
-    setIsLoggedIn(true);
-    setShowSuccessDialog(true);
+    initiateEmailSignIn(auth, email, password);
   };
 
-  const handleDialogClose = () => {
-    setShowSuccessDialog(false);
-    setShowContentBlocks(true);
-  }
+  const handleAnonymousSignIn = () => {
+    initiateAnonymousSignIn(auth);
+  };
 
   const handleOpenCustomPlanner = () => {
     setShowMealPlannerDialog(false);
@@ -111,7 +109,6 @@ export default function Home() {
       const plan = await generateMealPlan();
       setGeneratedPlan(plan);
       setShowMealPlannerDialog(false);
-      setShowSuccessDialog(true);
     } catch (error) {
       console.error("Failed to generate meal plan:", error);
     } finally {
@@ -132,17 +129,20 @@ export default function Home() {
   };
 
   const handleGeneratedDialogClose = () => {
-    setShowSuccessDialog(false);
     setGeneratedPlan(null);
   }
 
-  if (!isClient) {
-    return null;
+  if (!isClient || isUserLoading) {
+    return (
+      <div className="flex min-h-screen w-full flex-col items-center justify-center">
+        <Loader2 className="h-16 w-16 animate-spin text-white" />
+      </div>
+    );
   }
 
   return (
     <>
-      {!isLoggedIn && (
+      {!user && (
         <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-black/20 p-8 shadow-2xl backdrop-blur-lg">
           {formView === 'signin' ? (
             <>
@@ -163,6 +163,8 @@ export default function Home() {
                       type="email"
                       placeholder="Enter your email"
                       className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="relative">
@@ -172,15 +174,13 @@ export default function Home() {
                       type="password"
                       placeholder="Enter your password"
                       className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Checkbox id="remember" className="border-white/30 text-primary data-[state=checked]:bg-primary"/>
-                    <Label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-400">Remember me</Label>
-                  </div>
+                <div className="flex items-center justify-end">
                   <a href="#" className="text-sm text-primary hover:underline">Forgot Password?</a>
                 </div>
 
@@ -195,17 +195,10 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-4">
-                  <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
+                  <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white" onClick={handleAnonymousSignIn}>
                     <div className="flex items-center gap-2">
-                      <GoogleIcon className="h-5 w-5"/>
-                      Continue with Google
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-gray-400" />
-                  </Button>
-                  <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
-                    <div className="flex items-center gap-2">
-                      <GithubIcon className="h-5 w-5"/>
-                      Continue with GitHub
+                      <User className="h-5 w-5"/>
+                      Continue as Guest
                     </div>
                     <ArrowRight className="h-4 w-4 text-gray-400" />
                   </Button>
@@ -232,21 +225,14 @@ export default function Home() {
               <form className="mt-8 space-y-4" onSubmit={handleSignUp}>
                 <div className="space-y-4">
                   <div className="relative">
-                    <Label htmlFor="fullname" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Full Name</Label>
-                    <Input
-                      id="fullname"
-                      type="text"
-                      placeholder="Enter your full name"
-                      className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
-                    />
-                  </div>
-                  <div className="relative">
                     <Label htmlFor="email-signup" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
                     <Input
                       id="email-signup"
                       type="email"
                       placeholder="Enter your email"
                       className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="relative">
@@ -256,6 +242,8 @@ export default function Home() {
                       type="password"
                       placeholder="Create a password"
                       className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                 </div>
@@ -276,9 +264,9 @@ export default function Home() {
         </div>
       )}
 
-      {isLoggedIn && (
+      {user && (
         <>
-          <Dialog open={showSuccessDialog && !!generatedPlan} onOpenChange={(isOpen) => !isOpen && handleGeneratedDialogClose()}>
+          <Dialog open={!!generatedPlan} onOpenChange={(isOpen) => !isOpen && handleGeneratedDialogClose()}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Generated Meal Plan</DialogTitle>
@@ -549,7 +537,3 @@ export default function Home() {
     </>
   );
 }
-
-    
-
-    

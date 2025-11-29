@@ -1,7 +1,6 @@
 {
   "entities": {
     "User": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "User",
       "type": "object",
       "description": "Represents a user of the Perspectify application.",
@@ -9,28 +8,78 @@
         "id": {
           "type": "string",
           "description": "Unique identifier for the User entity."
-        },
-        "username": {
-          "type": "string",
-          "description": "The user's username."
-        },
-        "email": {
-          "type": "string",
-          "description": "The user's email address.",
-          "format": "email"
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the user account was created.",
-          "format": "date-time"
         }
       },
       "required": [
-        "id",
-        "username",
-        "email",
-        "createdAt"
+        "id"
       ]
+    },
+    "NutrientLog": {
+      "title": "Nutrient Log",
+      "type": "object",
+      "description": "A log of the nutritional information for a single meal.",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the meal was logged."
+        },
+        "mealType": {
+          "type": "string",
+          "enum": ["breakfast", "lunch", "dinner", "snacks"],
+          "description": "The type of meal."
+        },
+        "meal": {
+          "type": "string",
+          "description": "The description of the meal."
+        },
+        "calories": {
+          "type": "number",
+          "description": "Estimated calories in the meal."
+        },
+        "protein": {
+          "type": "number",
+          "description": "Estimated grams of protein in the meal."
+        },
+        "carbs": {
+          "type": "number",
+          "description": "Estimated grams of carbohydrates in the meal."
+        },
+        "fat": {
+          "type": "number",
+          "description": "Estimated grams of fat in the meal."
+        }
+      },
+      "required": ["date", "mealType", "meal", "calories", "protein", "carbs", "fat"]
+    },
+    "MealPlan": {
+      "title": "Meal Plan",
+      "type": "object",
+      "description": "A daily meal plan created by the user.",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date the meal plan was created for."
+        },
+        "breakfast": {
+          "type": "string",
+          "description": "The breakfast plan."
+        },
+        "lunch": {
+          "type": "string",
+          "description": "The lunch plan."
+        },
+        "dinner": {
+          "type": "string",
+          "description": "The dinner plan."
+        },
+        "snacks": {
+          "type": "string",
+          "description": "The snacks plan."
+        }
+      },
+      "required": ["date"]
     }
   },
   "auth": {
@@ -46,18 +95,33 @@
         "definition": {
           "entityName": "User",
           "schema": {
-            "$ref": "#/backend/entities/User"
+            "$ref": "#/entities/User"
           },
-          "description": "Stores user profile information. Path-based ownership ensures only the authenticated user can access their data.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique ID of the user. This MUST match the Firebase Auth UID."
+          "description": "Stores user profile information. Path-based ownership ensures only the authenticated user can access their data."
+        },
+        "subcollections": [
+          {
+            "path": "nutrient_logs",
+            "definition": {
+              "entityName": "NutrientLog",
+              "schema": {
+                "$ref": "#/entities/NutrientLog"
+              },
+              "description": "A subcollection to store individual nutrient logs for a user."
             }
-          ]
-        }
+          },
+          {
+            "path": "meal_plans",
+            "definition": {
+              "entityName": "MealPlan",
+              "schema": {
+                "$ref": "#/entities/MealPlan"
+              },
+              "description": "A subcollection to store custom meal plans for a user."
+            }
+          }
+        ]
       }
-    ],
-    "reasoning": "The Firestore structure is designed to be simple and secure, focusing on user data. User data is stored in a path-based structure under `/users/{userId}`. This structure facilitates straightforward ownership-based security rules. The structure ensures Authorization Independence as the authorization check only relies on `request.auth.uid` and the path. This eliminates the need for `get()` calls in security rules and allows for atomic operations. Since all documents in the `users` collection share the same security requirements (only the authenticated user can access their own data), Structural Segregation is achieved. QAPs are supported because listing operations on `/users/{userId}` are secure as they are always scoped to the authenticated user's ID."
+    ]
   }
 }
