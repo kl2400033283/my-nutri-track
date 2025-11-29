@@ -15,9 +15,8 @@ const GenerateMealPlanOutputSchema = z.object({
   dinner: z.string().describe('A healthy and balanced dinner suggestion. Should be 1-2 sentences.'),
   snacks: z.string().describe('A healthy and balanced snack suggestion. Should be 1-2 sentences.'),
 });
-export type GenerateMealPlanOutput = z.infer<typeof GenerateMealPlanOutputSchema>;
 
-export async function generateMealPlan(): Promise<GenerateMealPlanOutput> {
+export async function generateMealPlan() {
   return generateMealPlanFlow();
 }
 
@@ -38,6 +37,6 @@ const generateMealPlanFlow = ai.defineFlow(
   },
   async () => {
     const {output} = await prompt();
-    return output!;
+    return output;
   }
 );

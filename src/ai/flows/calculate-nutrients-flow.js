@@ -14,7 +14,6 @@ const CalculateNutrientsInputSchema = z.object({
   meal: z.string().describe('The meal to be analyzed.'),
   mealType: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']).describe('The type of meal.'),
 });
-export type CalculateNutrientsInput = z.infer<typeof CalculateNutrientsInputSchema>;
 
 const CalculateNutrientsOutputSchema = z.object({
   calories: z.number().describe('Estimated calories in the meal.'),
@@ -23,9 +22,8 @@ const CalculateNutrientsOutputSchema = z.object({
   fat: z.number().describe('Estimated grams of fat in the meal.'),
   idealMealSuggestion: z.string().describe('A suggestion for an ideal meal for the given meal type (e.g., breakfast, lunch). This should be 1-2 sentences.'),
 });
-export type CalculateNutrientsOutput = z.infer<typeof CalculateNutrientsOutputSchema>;
 
-export async function calculateNutrients(input: CalculateNutrientsInput): Promise<CalculateNutrientsOutput> {
+export async function calculateNutrients(input) {
   return calculateNutrientsFlow(input);
 }
 
@@ -50,6 +48,6 @@ const calculateNutrientsFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt(input);
-    return output!;
+    return output;
   }
 );

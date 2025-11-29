@@ -1,7 +1,7 @@
 'use client';
 
 import { firebaseConfig } from '@/firebase/config';
-import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'
 
@@ -32,7 +32,7 @@ export function initializeFirebase() {
   return getSdks(getApp());
 }
 
-export function getSdks(firebaseApp: FirebaseApp) {
+export function getSdks(firebaseApp) {
   return {
     firebaseApp,
     auth: getAuth(firebaseApp),
@@ -42,8 +42,8 @@ export function getSdks(firebaseApp: FirebaseApp) {
 
 export * from './provider';
 export * from './client-provider';
-export * from './firestore/use-collection';
-export * from './firestore/use-doc';
+export * from './firestore/use-collection.js';
+export * from './firestore/use-doc.js';
 export * from './non-blocking-updates';
 export * from './non-blocking-login';
 export * from './errors';
