@@ -88,6 +88,10 @@ export default function Home() {
     router.push('/breakfast');
   };
 
+  const handleLunchClick = () => {
+    router.push('/lunch');
+  };
+
   if (!isClient) {
     return null;
   }
@@ -202,7 +206,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="relative">
-                    <Label htmlFor="password-signup" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Password</Label>
+                    <Label htmlFor="password-signup" className="absolute -top_2 left_2 inline_block bg_transparent px_1 text_xs font_medium text_gray_400 backdrop_blur_sm">Password</Label>
                     <Input
                       id="password-signup"
                       type="password"
@@ -327,7 +331,7 @@ export default function Home() {
                     <h2 className="text-xl font-bold">Breakfast</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleLunchClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Utensils className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Lunch</h2>
@@ -369,7 +373,7 @@ export default function Home() {
                     <h2 className="text-xl font-bold">Breakfast</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleLunchClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Utensils className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Lunch</h2>
@@ -411,7 +415,7 @@ export default function Home() {
                     <h2 className="text-xl font-bold">Breakfast</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleLunchClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Utensils className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Lunch</h2>
