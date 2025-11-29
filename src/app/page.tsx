@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -25,10 +26,16 @@ const AppleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function Home() {
   const [formView, setFormView] = useState('signin');
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
     setFormView('signin');
+  };
+
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowSuccessDialog(true);
   };
 
   return (
@@ -43,7 +50,7 @@ export default function Home() {
               <p className="text-sm text-gray-400">Please enter your details to sign in.</p>
             </div>
 
-            <form className="mt-8 space-y-4">
+            <form className="mt-8 space-y-4" onSubmit={handleSignIn}>
               <div className="space-y-4">
                 <div className="relative">
                   <Label htmlFor="email" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
@@ -162,6 +169,21 @@ export default function Home() {
             </div>
           </>
         )}
+        <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Success!</DialogTitle>
+              <DialogDescription>
+                You have successfully signed in.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>Close</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
   );
 }
