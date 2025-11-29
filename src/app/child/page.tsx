@@ -1,6 +1,6 @@
 'use client';
 import { Card, CardContent } from "@/components/ui/card";
-import { Coffee, Cookie, UtensilsCrossed } from "lucide-react";
+import { Coffee, Utensils, UtensilsCrossed } from "lucide-react";
 
 export default function ChildPage() {
   return (
@@ -18,8 +18,8 @@ export default function ChildPage() {
         </Card>
         <Card className="flex h-56 w-56 items-center justify-center border-none bg-black/50 shadow-lg">
           <CardContent className="flex flex-col items-center gap-2 p-0">
-            <Cookie className="h-12 w-12 text-white" />
-            <h2 className="text-2xl font-bold text-white">Snacks</h2>
+            <Utensils className="h-12 w-12 text-white" />
+            <h2 className="text-2xl font-bold text-white">Lunch</h2>
           </CardContent>
         </Card>
         <Card className="flex h-56 w-56 items-center justify-center border-none bg-black/50 shadow-lg">
