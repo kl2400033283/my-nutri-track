@@ -24,11 +24,9 @@ export default function BreakfastPage() {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={() => router.back()}>Cancel</Button>
-        <Button>Save Breakfast</Button>
+        <Button variant="outline" onClick={() => router.back()}>Back</Button>
+        <Button>Save</Button>
       </CardFooter>
     </Card>
   );
 }
-
-    
