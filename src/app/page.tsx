@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
-import { ArrowRight, GithubIcon, BookCopy, Baby, User, PersonStanding } from "lucide-react";
+import { ArrowRight, GithubIcon, BookCopy, Baby, User, PersonStanding, Coffee, Utensils, Cookie } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -307,13 +307,39 @@ export default function Home() {
           </Dialog>
 
           <Dialog open={showChildDialog} onOpenChange={setShowChildDialog}>
-            <DialogContent>
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>Children's Nutrition</DialogTitle>
                 <DialogDescription>
-                  What would you like to see in this pop-up?
+                  Manage your children's nutritional needs all in one place.
                 </DialogDescription>
               </DialogHeader>
+              <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 md:grid-cols-4">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Coffee className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Breakfast</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Utensils className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Lunch</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Cookie className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Snacks</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Utensils className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Dinner</h2>
+                  </CardContent>
+                </Card>
+              </div>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button>Close</Button>
