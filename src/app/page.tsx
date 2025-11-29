@@ -42,7 +42,7 @@ export default function Home() {
           <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/20 bg-white/10">
             <AppleIcon className="h-6 w-6 text-white/80" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
+          <h1 className="text-2xl font-bold text-white">NUTRI-TRACK</h1>
           <p className="text-sm text-gray-400">Please enter your details to sign in.</p>
         </div>
 
