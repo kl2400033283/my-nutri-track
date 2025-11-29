@@ -42,6 +42,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showContentBlocks, setShowContentBlocks] = useState(false);
+  const [showMealPlannerDialog, setShowMealPlannerDialog] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -224,6 +225,21 @@ export default function Home() {
             </DialogContent>
           </Dialog>
 
+          <Dialog open={showMealPlannerDialog} onOpenChange={setShowMealPlannerDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Meal Planner</DialogTitle>
+                <DialogDescription>
+                  Choose an option to create your meal plan.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="gap-2 sm:justify-center">
+                <Button>Custom Planner</Button>
+                <Button>Generate</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           {showContentBlocks && (
             <div className="flex flex-col items-center gap-6">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -248,7 +264,10 @@ export default function Home() {
                   </CardContent>
                 </Card>
               </div>
-              <Card className="mt-6 flex h-32 w-[calc(192px*3+48px)] max-w-full items-center justify-center border-none bg-black/50 shadow-lg sm:w-[calc(256px*3+48px)]">
+              <Card 
+                className="mt-6 flex h-32 w-[calc(192px*3+48px)] max-w-full cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:w-[calc(256px*3+48px)]"
+                onClick={() => setShowMealPlannerDialog(true)}
+              >
                 <CardContent className="flex flex-col items-center gap-2 p-0">
                   <BookCopy className="h-12 w-12 text-white" />
                   <h2 className="text-2xl font-bold text-white">Meal Planner</h2>
