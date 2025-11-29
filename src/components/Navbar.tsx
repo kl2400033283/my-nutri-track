@@ -21,9 +21,15 @@ export default function Navbar() {
 
   return (
     <header className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-4 bg-black/30 backdrop-blur-sm">
-      <Link href="/">
-        <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
-      </Link>
+      <div className="flex items-center gap-6">
+        <Link href="/">
+          <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
+        </Link>
+        <Link href="#" className="flex items-center gap-2 text-white hover:text-white/80">
+          <History className="h-5 w-5" />
+          <span className="font-medium">Previous Data</span>
+        </Link>
+      </div>
       <div className="flex items-center gap-2">
         <Sheet>
           <SheetTrigger asChild>
@@ -39,10 +45,6 @@ export default function Navbar() {
                   <Link href="#" className="flex items-center gap-4 px-2.5 py-2 text-foreground">
                     <Home className="h-6 w-6" />
                     Home
-                  </Link>
-                  <Link href="#" className="flex items-center gap-4 px-2.5 py-2 text-foreground">
-                    <History className="h-6 w-6" />
-                    Previous Data
                   </Link>
                   <Separator />
                   <Accordion type="single" collapsible onValueChange={(value) => setIsSettingsOpen(value === 'settings')}>
