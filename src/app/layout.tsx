@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'Perspectify',
-  description: 'A 3D animated login experience.',
+  title: 'New Project',
+  description: 'Created with Firebase Studio',
 };
 
 export default function RootLayout({
