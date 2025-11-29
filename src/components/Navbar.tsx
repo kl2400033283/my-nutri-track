@@ -31,7 +31,7 @@ export default function Navbar() {
           <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
         </Link>
         {user && (
-          <Link href="/previous-data" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white hover:text-white/80">
+          <Link href="/previous-data" className="flex items-center gap-2 text-white hover:text-white/80">
             <History className="h-5 w-5" />
             <span className="font-medium">Previous Data</span>
           </Link>
