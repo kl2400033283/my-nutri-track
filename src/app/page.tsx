@@ -46,6 +46,8 @@ export default function Home() {
   const [showMealPlannerDialog, setShowMealPlannerDialog] = useState(false);
   const [showCustomPlannerDialog, setShowCustomPlannerDialog] = useState(false);
   const [showChildDialog, setShowChildDialog] = useState(false);
+  const [showAdultDialog, setShowAdultDialog] = useState(false);
+  const [showSeniorDialog, setShowSeniorDialog] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
@@ -348,6 +350,90 @@ export default function Home() {
             </DialogContent>
           </Dialog>
 
+          <Dialog open={showAdultDialog} onOpenChange={setShowAdultDialog}>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Adult Nutrition</DialogTitle>
+                <DialogDescription>
+                  Manage your nutritional needs all in one place.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 md:grid-cols-4">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Coffee className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Breakfast</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Utensils className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Lunch</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Cookie className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Snacks</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Utensils className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Dinner</h2>
+                  </CardContent>
+                </Card>
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showSeniorDialog} onOpenChange={setShowSeniorDialog}>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Senior Citizen's Nutrition</DialogTitle>
+                <DialogDescription>
+                  Manage your nutritional needs all in one place.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 md:grid-cols-4">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Coffee className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Breakfast</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Utensils className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Lunch</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Cookie className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Snacks</h2>
+                  </CardContent>
+                </Card>
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                  <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
+                    <Utensils className="h-10 w-10" />
+                    <h2 className="text-xl font-bold">Dinner</h2>
+                  </CardContent>
+                </Card>
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
 
           {showContentBlocks && (
             <div className="flex flex-col items-center gap-6">
@@ -372,22 +458,24 @@ export default function Home() {
                     <h2 className="text-2xl font-bold text-white">CHILD</h2>
                   </CardContent>
                 </Card>
-                <Link href="/adult">
-                  <Card className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64">
-                    <CardContent className="flex flex-col items-center gap-2 p-0">
-                      <User className="h-12 w-12 text-white" />
-                      <h2 className="text-2xl font-bold text-white">ADULT</h2>
-                    </CardContent>
-                  </Card>
-                </Link>
-                <Link href="/senior">
-                  <Card className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64">
-                    <CardContent className="flex flex-col items-center gap-2 p-0">
-                      <PersonStanding className="h-12 w-12 text-white" />
-                      <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
-                    </CardContent>
-                  </Card>
-                </Link>
+                <Card 
+                  className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64"
+                  onClick={() => setShowAdultDialog(true)}
+                >
+                  <CardContent className="flex flex-col items-center gap-2 p-0">
+                    <User className="h-12 w-12 text-white" />
+                    <h2 className="text-2xl font-bold text-white">ADULT</h2>
+                  </CardContent>
+                </Card>
+                <Card 
+                  className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64"
+                  onClick={() => setShowSeniorDialog(true)}
+                >
+                  <CardContent className="flex flex-col items-center gap-2 p-0">
+                    <PersonStanding className="h-12 w-12 text-white" />
+                    <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
+                  </CardContent>
+                </Card>
               </div>
 
             </div>
