@@ -219,7 +219,7 @@ export default function Home() {
           <Dialog open={showSuccessDialog} onOpenChange={(isOpen) => !isOpen && handleDialogClose()}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>ideal meal plan</DialogTitle>
+                <DialogTitle>Ideal Meal Plan</DialogTitle>
                 <DialogDescription>
                   <div className="space-y-2 text-left">
                     <p className="font-bold">Breakfast</p>
