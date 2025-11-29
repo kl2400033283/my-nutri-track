@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -203,11 +204,13 @@ export default function Home() {
 
           {showContentBlocks && (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                <CardContent className="p-0">
-                  <h2 className="text-2xl font-bold text-white">CHILD</h2>
-                </CardContent>
-              </Card>
+              <Link href="/child">
+                <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
+                  <CardContent className="p-0">
+                    <h2 className="text-2xl font-bold text-white">CHILD</h2>
+                  </CardContent>
+                </Card>
+              </Link>
               <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
                 <CardContent className="p-0">
                   <h2 className="text-2xl font-bold text-white">ADULT</h2>
