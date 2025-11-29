@@ -238,10 +238,6 @@ export default function Home() {
                   </CardContent>
                 </Card>
               </div>
-              <Button variant="outline" onClick={handleSignOut} className="mt-4 border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
-              </Button>
             </div>
           )}
         </>
