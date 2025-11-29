@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
-import { ArrowRight, GithubIcon, Baby, User, BookCopy } from "lucide-react";
+import { ArrowRight, GithubIcon, BookCopy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -48,7 +48,8 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
-    if (localStorage.getItem('isLoggedIn') === 'true') {
+    const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+    if (loggedInStatus) {
       setIsLoggedIn(true);
       setShowContentBlocks(true);
     }
@@ -218,7 +219,7 @@ export default function Home() {
           <Dialog open={showSuccessDialog} onOpenChange={(isOpen) => !isOpen && handleDialogClose()}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Success!</DialogTitle>
+                <DialogTitle>ideal meal plan</DialogTitle>
                 <DialogDescription>
                   You have successfully signed in.
                 </DialogDescription>
