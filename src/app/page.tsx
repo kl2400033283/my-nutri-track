@@ -251,12 +251,14 @@ export default function Home() {
                     </CardContent>
                   </Card>
                 </Link>
-                <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                  <CardContent className="flex flex-col items-center gap-2 p-0">
-                    <User className="h-12 w-12 text-white" />
-                    <h2 className="text-2xl font-bold text-white">ADULT</h2>
-                  </CardContent>
-                </Card>
+                <Link href="/adult">
+                  <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
+                    <CardContent className="flex flex-col items-center gap-2 p-0">
+                      <User className="h-12 w-12 text-white" />
+                      <h2 className="text-2xl font-bold text-white">ADULT</h2>
+                    </CardContent>
+                  </Card>
+                </Link>
                 <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
                   <CardContent className="flex flex-col items-center gap-2 p-0">
                     <SeniorIcon className="text-white" />
