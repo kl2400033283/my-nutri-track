@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function PreviousDataPage() {
   const { user, isUserLoading } = useUser();
@@ -118,6 +119,9 @@ export default function PreviousDataPage() {
               </div>
             )}
         </CardContent>
+        <CardFooter className="flex justify-end">
+            <Button variant="outline" onClick={() => router.back()}>Back</Button>
+        </CardFooter>
       </Card>
     </div>
   );
