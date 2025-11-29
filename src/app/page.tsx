@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
-import { ArrowRight, GithubIcon, Baby } from "lucide-react";
+import { ArrowRight, GithubIcon, Baby, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -226,7 +226,8 @@ export default function Home() {
                   </Card>
                 </Link>
                 <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                  <CardContent className="p-0">
+                  <CardContent className="flex flex-col items-center gap-2 p-0">
+                    <User className="h-12 w-12 text-white" />
                     <h2 className="text-2xl font-bold text-white">ADULT</h2>
                   </CardContent>
                 </Card>
