@@ -259,12 +259,14 @@ export default function Home() {
                     </CardContent>
                   </Card>
                 </Link>
-                <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                  <CardContent className="flex flex-col items-center gap-2 p-0">
-                    <SeniorIcon className="text-white" />
-                    <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
-                  </CardContent>
-                </Card>
+                <Link href="/senior">
+                  <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
+                    <CardContent className="flex flex-col items-center gap-2 p-0">
+                      <SeniorIcon className="text-white" />
+                      <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
+                    </CardContent>
+                  </Card>
+                </Link>
               </div>
               <Card 
                 className="mt-6 flex h-32 w-[calc(192px*3+48px)] max-w-full cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:w-[calc(256px*3+48px)]"
