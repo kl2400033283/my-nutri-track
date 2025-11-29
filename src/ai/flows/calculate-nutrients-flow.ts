@@ -21,6 +21,7 @@ const CalculateNutrientsOutputSchema = z.object({
   protein: z.number().describe('Estimated grams of protein in the meal.'),
   carbs: z.number().describe('Estimated grams of carbohydrates in the meal.'),
   fat: z.number().describe('Estimated grams of fat in the meal.'),
+  idealMealSuggestion: z.string().describe('A suggestion for an ideal meal for the given meal type (e.g., breakfast, lunch). This should be 1-2 sentences.'),
 });
 export type CalculateNutrientsOutput = z.infer<typeof CalculateNutrientsOutputSchema>;
 
@@ -36,7 +37,9 @@ const prompt = ai.definePrompt({
 
 Meal: {{{meal}}}
 
-Provide your best estimate for calories, protein, carbohydrates, and fat.`,
+Provide your best estimate for calories, protein, carbohydrates, and fat.
+
+Also provide a suggestion for an ideal {{mealType}}.`,
 });
 
 const calculateNutrientsFlow = ai.defineFlow(

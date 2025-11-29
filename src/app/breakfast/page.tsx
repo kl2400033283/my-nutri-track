@@ -135,10 +135,7 @@ export default function BreakfastPage() {
               <div className="col-span-2 border-t border-white/20 my-2"></div>
               <div className="col-span-2 text-center text-xl font-bold mb-2">Ideal Breakfast Plan</div>
               <div className="col-span-2 text-sm text-gray-300">
-                <p>A balanced breakfast to start your day right could be:</p>
-                <p className="mt-2 font-semibold">Veg upma/poha + sprouts + milk/herbal tea</p>
-                <p className="text-xs text-gray-400">OR</p>
-                <p className="font-semibold">2 whole-wheat parathas + curd + fruit (with less oil)</p>
+                <p>{nutrients.idealMealSuggestion}</p>
               </div>
             </div>
           )}
