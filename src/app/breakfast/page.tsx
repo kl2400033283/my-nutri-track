@@ -41,11 +41,14 @@ export default function BreakfastPage() {
       const result = await calculateNutrients({ meal: breakfastInput, mealType: 'breakfast' });
       setNutrients(result);
 
+      const storedTotalsJSON = localStorage.getItem('dailyTotals');
+      const storedTotals: DailyTotals = storedTotalsJSON ? JSON.parse(storedTotalsJSON) : { calories: 0, protein: 0, carbs: 0, fat: 0 };
+      
       const newTotals: DailyTotals = {
-        calories: dailyTotals.calories + result.calories,
-        protein: dailyTotals.protein + result.protein,
-        carbs: dailyTotals.carbs + result.carbs,
-        fat: dailyTotals.fat + result.fat,
+        calories: storedTotals.calories + result.calories,
+        protein: storedTotals.protein + result.protein,
+        carbs: storedTotals.carbs + result.carbs,
+        fat: storedTotals.fat + result.fat,
       };
 
       setDailyTotals(newTotals);
@@ -61,12 +64,12 @@ export default function BreakfastPage() {
     }
   };
 
-  const remaining = {
-    calories: dailyGoals.calories - dailyTotals.calories,
-    protein: dailyGoals.protein - dailyTotals.protein,
-    carbs: dailyGoals.carbs - dailyTotals.carbs,
-    fat: dailyGoals.fat - dailyTotals.fat,
-  };
+  const remaining = nutrients ? {
+    calories: dailyGoals.calories - nutrients.calories,
+    protein: dailyGoals.protein - nutrients.protein,
+    carbs: dailyGoals.carbs - nutrients.carbs,
+    fat: dailyGoals.fat - nutrients.fat,
+  } : dailyGoals;
 
   if (!isClient) return null;
 
