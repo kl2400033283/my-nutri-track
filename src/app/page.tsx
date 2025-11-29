@@ -43,9 +43,11 @@ export default function Home() {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showContentBlocks, setShowContentBlocks] = useState(false);
   const [showMealPlannerDialog, setShowMealPlannerDialog] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setIsClient(true);
     if (localStorage.getItem('isLoggedIn') === 'true') {
       setIsLoggedIn(true);
       setShowContentBlocks(true);
@@ -69,6 +71,10 @@ export default function Home() {
   const handleDialogClose = () => {
     setShowSuccessDialog(false);
     setShowContentBlocks(true);
+  }
+
+  if (!isClient) {
+    return null;
   }
 
   return (
