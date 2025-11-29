@@ -30,6 +30,11 @@ export default function Navbar() {
         <Link href="/">
           <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
         </Link>
+        {user && (
+          <Link href="/previous-data" className="text-white hover:text-primary">
+            Data
+          </Link>
+        )}
       </div>
       {user && (
         <div className="flex items-center gap-2">
