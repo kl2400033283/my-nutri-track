@@ -237,7 +237,7 @@ export default function Home() {
               </div>
               <Card className="mt-6 flex h-32 w-[calc(192px*3+48px)] max-w-full items-center justify-center border-none bg-black/50 shadow-lg sm:w-[calc(256px*3+48px)]">
                 <CardContent className="p-0">
-                  <h2 className="text-2xl font-bold text-white">New Block</h2>
+                  <h2 className="text-2xl font-bold text-white">Meal Planner</h2>
                 </CardContent>
               </Card>
             </div>
