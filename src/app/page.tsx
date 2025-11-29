@@ -28,11 +28,9 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-6 font-body overflow-hidden">
-      <div className="relative w-full max-w-sm">
+      <div className="flex flex-col items-center w-full max-w-sm">
         <ThreeDeePerspectify lookAway={isLookingAway} />
-        <div className="relative z-10">
-          <LoginForm onPasswordChange={handlePasswordChange} />
-        </div>
+        <LoginForm onPasswordChange={handlePasswordChange} />
       </div>
     </main>
   );

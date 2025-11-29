@@ -145,5 +145,5 @@ export function ThreeDeePerspectify({ lookAway }: ThreeDeePerspectifyProps) {
     return cleanup;
   }, [lookAway]);
 
-  return <div ref={mountRef} className="absolute inset-x-0 -top-48 z-0 h-[500px] w-full" />;
+  return <div ref={mountRef} className="h-64 w-full" />;
 }
