@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Textarea } from "@/components/ui/textarea";
 import { generateMealPlan, GenerateMealPlanOutput } from '@/ai/flows/generate-meal-plan-flow';
 import { useAuth, useFirestore } from '@/firebase';
-import { initiateAnonymousSignIn, initiateEmailSignIn, initiateEmailSignUp } from '@/firebase/non-blocking-login';
+import { initiateAnonymousSignIn, initiateEmailSignIn, initiateEmailSignUp, initiateGoogleSignIn } from '@/firebase/non-blocking-login';
 import { useUser } from "@/firebase/provider";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { collection } from 'firebase/firestore';
@@ -81,8 +81,8 @@ export default function Home() {
     initiateEmailSignIn(auth, email, password);
   };
 
-  const handleAnonymousSignIn = () => {
-    initiateAnonymousSignIn(auth);
+  const handleGoogleSignIn = () => {
+    initiateGoogleSignIn(auth);
   };
 
   const handleOpenCustomPlanner = () => {
@@ -214,10 +214,10 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-4">
-                  <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white" onClick={handleAnonymousSignIn}>
+                  <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white" onClick={handleGoogleSignIn}>
                     <div className="flex items-center gap-2">
-                      <User className="h-5 w-5"/>
-                      Continue as Guest
+                      <GoogleIcon className="h-5 w-5"/>
+                      Continue with Google
                     </div>
                     <ArrowRight className="h-4 w-4 text-gray-400" />
                   </Button>
