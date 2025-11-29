@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { LogOut, User, Home, Settings, Smartphone, Download, Accessibility, Languages, HelpCircle, ShieldCheck, CircleUser, Info, ChevronRight, ChevronDown } from "lucide-react";
+import { LogOut, User, Home, Settings, Smartphone, Download, Accessibility, Languages, HelpCircle, ShieldCheck, CircleUser, Info, ChevronRight, ChevronDown, Database } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Button } from "./ui/button";
@@ -31,8 +31,9 @@ export default function Navbar() {
           <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
         </Link>
         {user && (
-          <Link href="/previous-data" className="text-white hover:text-primary">
-            Data
+          <Link href="/previous-data" className="flex items-center gap-2 text-white hover:text-primary">
+            <Database className="h-5 w-5" />
+            Your Data
           </Link>
         )}
       </div>
