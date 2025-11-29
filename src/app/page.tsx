@@ -29,6 +29,11 @@ export default function Home() {
   const backgroundImage = PlaceHolderImages.find(img => img.id === 'fruits-background');
   const [formView, setFormView] = useState('signin');
 
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormView('signin');
+  };
+
   return (
     <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-6">
        {backgroundImage && <Image
@@ -125,7 +130,7 @@ export default function Home() {
               <p className="text-sm text-gray-400">Please fill in the details to register.</p>
             </div>
 
-            <form className="mt-8 space-y-4">
+            <form className="mt-8 space-y-4" onSubmit={handleSignUp}>
               <div className="space-y-4">
                 <div className="relative">
                   <Label htmlFor="fullname" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Full Name</Label>
