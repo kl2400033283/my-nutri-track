@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "fruits-background",
+      "description": "A background image of assorted fruits.",
+      "imageUrl": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmcnVpdHN8ZW58MHx8fHwxNzY0Mzg3MDY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fruits"
+    }
+  ]
 }
