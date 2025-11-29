@@ -73,10 +73,6 @@ export default function BreakfastPage() {
                 <p className="font-bold text-lg">Fat</p>
                 <p>{nutrients.fat} g</p>
               </div>
-              <div className="col-span-2 mt-2">
-                <p className="font-bold text-lg">Feedback</p>
-                <p className="text-sm">{nutrients.feedback}</p>
-              </div>
             </div>
           )}
         </div>
