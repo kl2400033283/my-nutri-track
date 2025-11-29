@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { Textarea } from "@/components/ui/textarea";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -43,6 +44,7 @@ export default function Home() {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showContentBlocks, setShowContentBlocks] = useState(false);
   const [showMealPlannerDialog, setShowMealPlannerDialog] = useState(false);
+  const [showCustomPlannerDialog, setShowCustomPlannerDialog] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
@@ -72,6 +74,11 @@ export default function Home() {
   const handleDialogClose = () => {
     setShowSuccessDialog(false);
     setShowContentBlocks(true);
+  }
+
+  const handleOpenCustomPlanner = () => {
+    setShowMealPlannerDialog(false);
+    setShowCustomPlannerDialog(true);
   }
 
   if (!isClient) {
@@ -257,8 +264,43 @@ export default function Home() {
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter className="gap-2 sm:justify-center">
-                <Button>Custom Planner</Button>
+                <Button onClick={handleOpenCustomPlanner}>Custom Planner</Button>
                 <Button>Generate</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showCustomPlannerDialog} onOpenChange={setShowCustomPlannerDialog}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Custom Meal Planner</DialogTitle>
+                <DialogDescription>
+                  Create your own personalized meal plan for the day.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="breakfast-plan">Breakfast</Label>
+                  <Textarea id="breakfast-plan" placeholder="What's for breakfast?" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="lunch-plan">Lunch</Label>
+                  <Textarea id="lunch-plan" placeholder="What's for lunch?" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="snacks-plan">Snacks</Label>
+                  <Textarea id="snacks-plan" placeholder="Any snacks?" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="dinner-plan">Dinner</Label>
+                  <Textarea id="dinner-plan" placeholder="What's for dinner?" />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Save Plan</Button>
+                 <DialogClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -310,5 +352,3 @@ export default function Home() {
     </>
   );
 }
-
-    
