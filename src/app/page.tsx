@@ -9,9 +9,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from 'next/navigation';
 import { Textarea } from "@/components/ui/textarea";
 import { generateMealPlan, GenerateMealPlanOutput } from '@/ai/flows/generate-meal-plan-flow';
-import { useAuth } from '@/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { initiateAnonymousSignIn, initiateEmailSignIn, initiateEmailSignUp } from '@/firebase/non-blocking-login';
 import { useUser } from "@/firebase/provider";
+import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import { collection } from 'firebase/firestore';
 
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -54,9 +56,11 @@ export default function Home() {
   const [generatedPlan, setGeneratedPlan] = useState<GenerateMealPlanOutput | null>(null);
   const router = useRouter();
   const auth = useAuth();
+  const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [customPlan, setCustomPlan] = useState({ breakfast: '', lunch: '', snacks: '', dinner: '' });
 
   useEffect(() => {
     setIsClient(true);
@@ -131,6 +135,21 @@ export default function Home() {
   const handleGeneratedDialogClose = () => {
     setGeneratedPlan(null);
   }
+
+  const handleSavePlan = () => {
+    if (user && firestore) {
+      const mealPlan = {
+        date: new Date().toISOString(),
+        ...customPlan,
+      };
+      if (Object.values(mealPlan).some(field => typeof field === 'string' && field.trim() !== '')) {
+        const mealPlansRef = collection(firestore, 'users', user.uid, 'meal_plans');
+        addDocumentNonBlocking(mealPlansRef, mealPlan);
+        setCustomPlan({ breakfast: '', lunch: '', snacks: '', dinner: '' });
+        setShowCustomPlannerDialog(false);
+      }
+    }
+  };
 
   if (!isClient || isUserLoading) {
     return (
@@ -336,23 +355,23 @@ export default function Home() {
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
                   <Label htmlFor="breakfast-plan">Breakfast</Label>
-                  <Textarea id="breakfast-plan" placeholder="What's for breakfast?" />
+                  <Textarea id="breakfast-plan" placeholder="What's for breakfast?" value={customPlan.breakfast} onChange={(e) => setCustomPlan({...customPlan, breakfast: e.target.value})} />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="lunch-plan">Lunch</Label>
-                  <Textarea id="lunch-plan" placeholder="What's for lunch?" />
+                  <Textarea id="lunch-plan" placeholder="What's for lunch?" value={customPlan.lunch} onChange={(e) => setCustomPlan({...customPlan, lunch: e.target.value})} />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="snacks-plan">Snacks</Label>
-                  <Textarea id="snacks-plan" placeholder="Any snacks?" />
+                  <Textarea id="snacks-plan" placeholder="Any snacks?" value={customPlan.snacks} onChange={(e) => setCustomPlan({...customPlan, snacks: e.target.value})} />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="dinner-plan">Dinner</Label>
-                  <Textarea id="dinner-plan" placeholder="What's for dinner?" />
+                  <Textarea id="dinner-plan" placeholder="What's for dinner?" value={customPlan.dinner} onChange={(e) => setCustomPlan({...customPlan, dinner: e.target.value})} />
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit">Save Plan</Button>
+                <Button onClick={handleSavePlan}>Save Plan</Button>
                  <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
