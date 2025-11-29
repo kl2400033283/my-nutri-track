@@ -25,7 +25,7 @@ export default function LunchPage() {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline" onClick={() => router.back()}>Back</Button>
-        <Button>Save</Button>
+        <Button>Calculate Nutrients</Button>
       </CardFooter>
     </Card>
   );
