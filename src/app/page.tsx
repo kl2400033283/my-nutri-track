@@ -248,32 +248,7 @@ export default function Home() {
 
           {showContentBlocks && (
             <div className="flex flex-col items-center gap-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                <Link href="/child">
-                  <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
-                    <CardContent className="flex flex-col items-center gap-2 p-0">
-                      <Baby className="h-12 w-12 text-white" />
-                      <h2 className="text-2xl font-bold text-white">CHILD</h2>
-                    </CardContent>
-                  </Card>
-                </Link>
-                <Link href="/adult">
-                  <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
-                    <CardContent className="flex flex-col items-center gap-2 p-0">
-                      <User className="h-12 w-12 text-white" />
-                      <h2 className="text-2xl font-bold text-white">ADULT</h2>
-                    </CardContent>
-                  </Card>
-                </Link>
-                <Link href="/senior">
-                  <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
-                    <CardContent className="flex flex-col items-center gap-2 p-0">
-                      <SeniorIcon className="text-white" />
-                      <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
+              
               <Card 
                 className="mt-6 flex h-32 w-[calc(192px*3+48px)] max-w-full cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:w-[calc(256px*3+48px)]"
                 onClick={() => setShowMealPlannerDialog(true)}
