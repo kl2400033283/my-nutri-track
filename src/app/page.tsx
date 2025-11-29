@@ -1,5 +1,6 @@
 'use client';
-import { ArrowRight, Check, Circle, GithubIcon } from "lucide-react";
+import { ArrowRight, Circle, GithubIcon } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,15 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black p-6">
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-6">
+       <Image
+        src="https://picsum.photos/seed/fruits/1920/1080"
+        alt="Fruits and vegetables"
+        fill
+        className="object-cover -z-10 animate-zoom-in-out"
+        data-ai-hint="fruits vegetables"
+      />
+      <div className="absolute inset-0 bg-black/50 -z-10"></div>
       <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-black/20 p-8 shadow-2xl backdrop-blur-lg">
         <div className="flex flex-col items-center space-y-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/20 bg-white/10">
