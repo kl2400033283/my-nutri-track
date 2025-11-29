@@ -53,7 +53,7 @@ export default function Home() {
               <Input
                 id="email"
                 type="email"
-                defaultValue="merveavsar@mail.com"
+                placeholder="Enter your email"
                 className="flex-1 rounded-r-none border-r-0 bg-white/5 pr-12 text-white placeholder:text-gray-500"
               />
               <Button type="submit" size="icon" className="rounded-l-none bg-primary hover:bg-primary/80">
