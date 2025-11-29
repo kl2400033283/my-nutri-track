@@ -49,7 +49,10 @@ export default function LunchPage() {
           date: new Date().toISOString(),
           mealType: 'lunch',
           meal: lunchInput,
-          ...result,
+          calories: result.calories,
+          protein: result.protein,
+          carbs: result.carbs,
+          fat: result.fat,
         };
         const nutrientLogsRef = collection(firestore, 'users', user.uid, 'nutrient_logs');
         addDocumentNonBlocking(nutrientLogsRef, nutrientLog);

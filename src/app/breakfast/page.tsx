@@ -39,7 +39,10 @@ export default function BreakfastPage() {
           date: new Date().toISOString(),
           mealType: 'breakfast',
           meal: breakfastInput,
-          ...result,
+          calories: result.calories,
+          protein: result.protein,
+          carbs: result.carbs,
+          fat: result.fat,
         };
         const nutrientLogsRef = collection(firestore, 'users', user.uid, 'nutrient_logs');
         addDocumentNonBlocking(nutrientLogsRef, nutrientLog);
@@ -124,7 +127,7 @@ export default function BreakfastPage() {
                 <p>{remaining.fat} g</p>
               </div>
               <div className="col-span-2 border-t border-white/20 my-2"></div>
-              <div className="col-span-2 text-center text-xl font-bold mb-2">Ideal Breakfast Plan</div>
+              <div className="col-span-2 text-center text-xl font-bold mb-2">Ideal Breakfast Suggestion</div>
               <div className="col-span-2 text-sm text-gray-300">
                 <p>{nutrients.idealMealSuggestion}</p>
               </div>

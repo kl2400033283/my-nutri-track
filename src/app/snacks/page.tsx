@@ -49,7 +49,10 @@ export default function SnacksPage() {
           date: new Date().toISOString(),
           mealType: 'snacks',
           meal: snacksInput,
-          ...result,
+          calories: result.calories,
+          protein: result.protein,
+          carbs: result.carbs,
+          fat: result.fat,
         };
         const nutrientLogsRef = collection(firestore, 'users', user.uid, 'nutrient_logs');
         addDocumentNonBlocking(nutrientLogsRef, nutrientLog);

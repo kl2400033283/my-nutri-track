@@ -48,7 +48,10 @@ export default function DinnerPage() {
           date: new Date().toISOString(),
           mealType: 'dinner',
           meal: dinnerInput,
-          ...result,
+          calories: result.calories,
+          protein: result.protein,
+          carbs: result.carbs,
+          fat: result.fat,
         };
         const nutrientLogsRef = collection(firestore, 'users', user.uid, 'nutrient_logs');
         addDocumentNonBlocking(nutrientLogsRef, nutrientLog);
@@ -117,7 +120,7 @@ export default function DinnerPage() {
               <div className="col-span-2 border-t border-white/20 my-2"></div>
               <div className="col-span-2 text-center text-xl font-bold mb-2">Remaining Daily Balance</div>
               <div>
-                <p className="font-bold text-lg">Calories</p>p>
+                <p className="font-bold text-lg">Calories</p>
                 <p>{remaining.calories} kcal</p>
               </div>
               <div>

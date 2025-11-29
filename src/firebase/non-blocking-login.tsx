@@ -5,8 +5,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   FirebaseError,
+  UserCredential,
 } from 'firebase/auth';
+import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { toast } from '@/hooks/use-toast';
+import { firebaseConfig } from './config';
+import { initializeApp, getApps } from 'firebase/app';
 
 const getFriendlyAuthErrorMessage = (error: FirebaseError): string => {
   switch (error.code) {
@@ -46,6 +50,31 @@ export function initiateAnonymousSignIn(authInstance: Auth): void {
 /** Initiate email/password sign-up (non-blocking). */
 export function initiateEmailSignUp(authInstance: Auth, email: string, password: string): void {
   createUserWithEmailAndPassword(authInstance, email, password)
+    .then((userCredential: UserCredential) => {
+      // After user is created in Auth, save data to Firestore
+      const user = userCredential.user;
+      if (getApps().length === 0) {
+        initializeApp(firebaseConfig);
+      }
+      const db = getFirestore();
+      const userDocRef = doc(db, "users", user.uid);
+      
+      const userData = {
+        email: user.email,
+        createdAt: serverTimestamp(),
+        id: user.uid,
+      };
+
+      setDoc(userDocRef, userData)
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+          toast({
+            variant: "destructive",
+            title: "Database Error",
+            description: "Could not save user data to the database.",
+          });
+        });
+    })
     .catch((error: FirebaseError) => {
         const message = getFriendlyAuthErrorMessage(error);
         toast({
