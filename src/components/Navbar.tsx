@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { LogOut, User, Home, Settings, Smartphone, Download, Accessibility, Languages, HelpCircle, ShieldCheck, CircleUser, Info, ChevronRight, ChevronDown, History } from "lucide-react";
+import { LogOut, User, Home, Settings, Smartphone, Download, Accessibility, Languages, HelpCircle, ShieldCheck, CircleUser, Info, ChevronRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Button } from "./ui/button";
@@ -30,12 +30,6 @@ export default function Navbar() {
         <Link href="/">
           <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
         </Link>
-        {user && (
-          <Link href="/previous-data" className="flex items-center gap-2 text-white hover:text-white/80">
-            <History className="h-5 w-5" />
-            <span className="font-medium">Previous Data</span>
-          </Link>
-        )}
       </div>
       {user && (
         <div className="flex items-center gap-2">
