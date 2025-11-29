@@ -84,6 +84,10 @@ export default function Home() {
     setShowCustomPlannerDialog(true);
   }
 
+  const handleBreakfastClick = () => {
+    router.push('/breakfast');
+  };
+
   if (!isClient) {
     return null;
   }
@@ -317,7 +321,7 @@ export default function Home() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 md:grid-cols-4">
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleBreakfastClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Coffee className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Breakfast</h2>
@@ -359,7 +363,7 @@ export default function Home() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 md:grid-cols-4">
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleBreakfastClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Coffee className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Breakfast</h2>
@@ -401,7 +405,7 @@ export default function Home() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 md:grid-cols-4">
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleBreakfastClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Coffee className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Breakfast</h2>
@@ -485,3 +489,5 @@ export default function Home() {
     </>
   );
 }
+
+    
