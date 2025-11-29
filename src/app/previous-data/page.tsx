@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useUser, useFirestore, useCollection } from '@/firebase';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -13,11 +13,16 @@ export default function PreviousDataPage() {
   const firestore = useFirestore();
   const router = useRouter();
 
-  const nutrientLogsRef = user ? query(collection(firestore, 'users', user.uid, 'nutrient_logs'), orderBy('date', 'desc')) : null;
-  const mealPlansRef = user ? query(collection(firestore, 'users', user.uid, 'meal_plans'), orderBy('date', 'desc')) : null;
+  const nutrientLogsRef = useMemoFirebase(() => 
+    user ? query(collection(firestore, 'users', user.uid, 'nutrient_logs'), orderBy('date', 'desc')) : null
+  , [user, firestore]);
+
+  const mealPlansRef = useMemoFirebase(() =>
+    user ? query(collection(firestore, 'users', user.uid, 'meal_plans'), orderBy('date', 'desc')) : null
+  , [user, firestore]);
   
-  const { data: nutrientLogs, isLoading: nutrientLogsLoading } = useCollection(nutrientLogsRef as any);
-  const { data: mealPlans, isLoading: mealPlansLoading } = useCollection(mealPlansRef as any);
+  const { data: nutrientLogs, isLoading: nutrientLogsLoading } = useCollection(nutrientLogsRef);
+  const { data: mealPlans, isLoading: mealPlansLoading } = useCollection(mealPlansRef);
   
   const [isClient, setIsClient] = useState(false);
 
@@ -58,7 +63,7 @@ export default function PreviousDataPage() {
     <div className="w-full max-w-4xl">
       <Card className="border-none bg-black/50 shadow-lg text-white">
         <CardHeader>
-          <CardTitle>Previous Data</CardTitle>
+          <CardTitle>Your Data</CardTitle>
           <CardDescription>View your saved meal plans and nutrient logs.</CardDescription>
         </CardHeader>
         <CardContent>
