@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { LogOut, User, Home, Settings, Smartphone, Download, Accessibility, Languages, HelpCircle, ShieldCheck, CircleUser, Info, ChevronRight, ChevronDown } from "lucide-react";
+import { LogOut, User, Home, Settings, Smartphone, Download, Accessibility, Languages, HelpCircle, ShieldCheck, CircleUser, Info, ChevronRight, ChevronDown, History } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Button } from "./ui/button";
@@ -39,6 +39,10 @@ export default function Navbar() {
                   <Link href="#" className="flex items-center gap-4 px-2.5 py-2 text-foreground">
                     <Home className="h-6 w-6" />
                     Home
+                  </Link>
+                  <Link href="#" className="flex items-center gap-4 px-2.5 py-2 text-foreground">
+                    <History className="h-6 w-6" />
+                    Previous Data
                   </Link>
                   <Separator />
                   <Accordion type="single" collapsible onValueChange={(value) => setIsSettingsOpen(value === 'settings')}>
