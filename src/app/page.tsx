@@ -221,7 +221,23 @@ export default function Home() {
               <DialogHeader>
                 <DialogTitle>ideal meal plan</DialogTitle>
                 <DialogDescription>
-                  You have successfully signed in.
+                  <div className="space-y-2 text-left">
+                    <p className="font-bold">Breakfast</p>
+                    <p>Veg upma/poha + sprouts + milk/herbal tea</p>
+                    <p>OR 2 whole-wheat parathas + curd + fruit (less oil)</p>
+                    
+                    <p className="font-bold pt-2">Lunch</p>
+                    <p>2 rotis/brown rice + dal/rajma/chana</p>
+                    <p>Seasonal veg curry or salad</p>
+                    <p>Curd/buttermilk</p>
+
+                    <p className="font-bold pt-2">Dinner</p>
+                    <p>1–2 rotis/veg khichdi</p>
+                    <p>Veg soup or leafy green curry</p>
+
+                    <p className="font-bold pt-2">Snacks</p>
+                    <p>Nuts, roasted chana, or fruit</p>
+                  </div>
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
