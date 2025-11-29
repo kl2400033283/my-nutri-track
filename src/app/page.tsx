@@ -1,6 +1,6 @@
 'use client';
-import { useState } from "react";
-import { ArrowRight, GithubIcon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, GithubIcon, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,13 @@ export default function Home() {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showContentBlocks, setShowContentBlocks] = useState(false);
 
+  useEffect(() => {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      setIsLoggedIn(true);
+      setShowContentBlocks(true);
+    }
+  }, []);
+
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
     setFormView('signin');
@@ -39,8 +46,16 @@ export default function Home() {
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem('isLoggedIn', 'true');
     setIsLoggedIn(true);
     setShowSuccessDialog(true);
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    setShowContentBlocks(false);
+    setFormView('signin');
   };
 
   const handleDialogClose = () => {
@@ -203,24 +218,30 @@ export default function Home() {
           </Dialog>
 
           {showContentBlocks && (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              <Link href="/child">
-                <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
+            <div className="flex flex-col items-center gap-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                <Link href="/child">
+                  <Card className="flex h-48 w-64 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg">
+                    <CardContent className="p-0">
+                      <h2 className="text-2xl font-bold text-white">CHILD</h2>
+                    </CardContent>
+                  </Card>
+                </Link>
+                <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
                   <CardContent className="p-0">
-                    <h2 className="text-2xl font-bold text-white">CHILD</h2>
+                    <h2 className="text-2xl font-bold text-white">ADULT</h2>
                   </CardContent>
                 </Card>
-              </Link>
-              <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                <CardContent className="p-0">
-                  <h2 className="text-2xl font-bold text-white">ADULT</h2>
-                </CardContent>
-              </Card>
-              <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                <CardContent className="p-0">
-                  <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
-                </CardContent>
-              </Card>
+                <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
+                  <CardContent className="p-0">
+                    <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
+                  </CardContent>
+                </Card>
+              </div>
+              <Button variant="outline" onClick={handleSignOut} className="mt-4 border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </Button>
             </div>
           )}
         </>
