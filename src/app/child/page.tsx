@@ -29,8 +29,9 @@ export default function ChildPage() {
           </CardContent>
         </Card>
         <Card className="flex h-56 w-56 items-center justify-center border-none bg-black/50 shadow-lg">
-          <CardContent className="p-0">
-            <h2 className="text-2xl font-bold text-white">Block 4</h2>
+          <CardContent className="flex flex-col items-center gap-2 p-0">
+            <Utensils className="h-12 w-12 text-white" />
+            <h2 className="text-2xl font-bold text-white">Dinner</h2>
           </CardContent>
         </Card>
       </div>
