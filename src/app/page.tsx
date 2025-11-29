@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
-import { ArrowRight, GithubIcon, LogOut } from "lucide-react";
+import { ArrowRight, GithubIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -31,6 +32,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showContentBlocks, setShowContentBlocks] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -49,13 +51,6 @@ export default function Home() {
     localStorage.setItem('isLoggedIn', 'true');
     setIsLoggedIn(true);
     setShowSuccessDialog(true);
-  };
-
-  const handleSignOut = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-    setShowContentBlocks(false);
-    setFormView('signin');
   };
 
   const handleDialogClose = () => {

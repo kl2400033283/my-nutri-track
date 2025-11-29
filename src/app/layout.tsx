@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'New Project',
@@ -24,6 +25,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
+        <Navbar />
         <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-6">
           {backgroundImage && <Image
             src={backgroundImage.imageUrl}
