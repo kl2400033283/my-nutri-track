@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
-import { ArrowRight, GithubIcon, BookCopy, Baby, User, PersonStanding, Coffee, Utensils, Cookie } from "lucide-react";
+import { ArrowRight, GithubIcon, BookCopy, Baby, User, PersonStanding, Coffee, Utensils, Cookie, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Textarea } from "@/components/ui/textarea";
+import { generateMealPlan, GenerateMealPlanOutput } from '@/ai/flows/generate-meal-plan-flow';
+
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -49,6 +51,8 @@ export default function Home() {
   const [showAdultDialog, setShowAdultDialog] = useState(false);
   const [showSeniorDialog, setShowSeniorDialog] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedPlan, setGeneratedPlan] = useState<GenerateMealPlanOutput | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -99,6 +103,26 @@ export default function Home() {
   const handleDinnerClick = () => {
     router.push('/dinner');
   };
+
+  const handleGeneratePlan = async () => {
+    setIsGenerating(true);
+    setGeneratedPlan(null);
+    try {
+      const plan = await generateMealPlan();
+      setGeneratedPlan(plan);
+      setShowMealPlannerDialog(false);
+      setShowSuccessDialog(true);
+    } catch (error) {
+      console.error("Failed to generate meal plan:", error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleGeneratedDialogClose = () => {
+    setShowSuccessDialog(false);
+    setGeneratedPlan(null);
+  }
 
   if (!isClient) {
     return null;
@@ -242,33 +266,31 @@ export default function Home() {
 
       {isLoggedIn && (
         <>
-          <Dialog open={showSuccessDialog} onOpenChange={(isOpen) => !isOpen && handleDialogClose()}>
+          <Dialog open={showSuccessDialog && !!generatedPlan} onOpenChange={(isOpen) => !isOpen && handleGeneratedDialogClose()}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Ideal Meal Plan</DialogTitle>
-                <DialogDescription>
-                  <div className="space-y-2 text-left">
-                    <p className="font-bold">Breakfast</p>
-                    <p>Veg upma/poha + sprouts + milk/herbal tea</p>
-                    <p>OR 2 whole-wheat parathas + curd + fruit (less oil)</p>
-                    
-                    <p className="font-bold pt-2">Lunch</p>
-                    <p>2 rotis/brown rice + dal/rajma/chana</p>
-                    <p>Seasonal veg curry or salad</p>
-                    <p>Curd/buttermilk</p>
+                <DialogTitle>Generated Meal Plan</DialogTitle>
+                {generatedPlan && (
+                  <DialogDescription>
+                    <div className="space-y-2 text-left mt-4 max-h-96 overflow-y-auto">
+                      <p className="font-bold">Breakfast</p>
+                      <p>{generatedPlan.breakfast}</p>
+                      
+                      <p className="font-bold pt-2">Lunch</p>
+                      <p>{generatedPlan.lunch}</p>
 
-                    <p className="font-bold pt-2">Dinner</p>
-                    <p>1–2 rotis/veg khichdi</p>
-                    <p>Veg soup or leafy green curry</p>
+                      <p className="font-bold pt-2">Dinner</p>
+                      <p>{generatedPlan.dinner}</p>
 
-                    <p className="font-bold pt-2">Snacks</p>
-                    <p>Nuts, roasted chana, or fruit</p>
-                  </div>
-                </DialogDescription>
+                      <p className="font-bold pt-2">Snacks</p>
+                      <p>{generatedPlan.snacks}</p>
+                    </div>
+                  </DialogDescription>
+                )}
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button onClick={handleDialogClose}>Close</Button>
+                  <Button onClick={handleGeneratedDialogClose}>Close</Button>
                 </DialogClose>
               </DialogFooter>
             </DialogContent>
@@ -284,7 +306,10 @@ export default function Home() {
               </DialogHeader>
               <DialogFooter className="gap-2 sm:justify-center">
                 <Button onClick={handleOpenCustomPlanner}>Custom Planner</Button>
-                <Button>Generate</Button>
+                <Button onClick={handleGeneratePlan} disabled={isGenerating}>
+                  {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Generate
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
