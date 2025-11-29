@@ -203,7 +203,7 @@ export default function Home() {
 
           {showContentBlocks && (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              <Card className="h-48 w-64 border-none bg-gradient-to-br from-purple-500 to-indigo-600 shadow-lg" />
+              <Card className="h-48 w-64 border-none bg-black/50 shadow-lg" />
               <Card className="h-48 w-64 border-none bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg" />
               <Card className="h-48 w-64 border-none bg-gradient-to-br from-green-400 to-teal-500 shadow-lg" />
             </div>
