@@ -1,5 +1,6 @@
 'use client';
-import { ArrowRight, GithubIcon, LockIcon } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, GithubIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,6 +27,7 @@ const AppleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function Home() {
   const backgroundImage = PlaceHolderImages.find(img => img.id === 'fruits-background');
+  const [formView, setFormView] = useState('signin');
 
   return (
     <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-6">
@@ -38,78 +40,135 @@ export default function Home() {
       />}
       <div className="absolute inset-0 bg-black/50 -z-10"></div>
       <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-black/20 p-8 shadow-2xl backdrop-blur-lg">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/20 bg-white/10">
-            <AppleIcon className="h-6 w-6 text-white/80" />
-          </div>
-          <h1 className="text-2xl font-bold text-white">NUTRI-TRACK</h1>
-          <p className="text-sm text-gray-400">Please enter your details to sign in.</p>
-        </div>
-
-        <form className="mt-8 space-y-4">
-          <div className="space-y-4">
-            <div className="relative">
-              <Label htmlFor="email" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
-              />
-            </div>
-            <div className="relative">
-              <Label htmlFor="password" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
-              />
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Checkbox id="remember" className="border-white/30 text-primary data-[state=checked]:bg-primary"/>
-              <Label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-400">Remember me</Label>
-            </div>
-            <a href="#" className="text-sm text-primary hover:underline">Forgot Password?</a>
-          </div>
-
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/80">
-            Sign In
-          </Button>
-
-          <div className="flex items-center">
-            <div className="flex-grow border-t border-white/10"></div>
-            <span className="mx-4 flex-shrink text-xs text-gray-400">OR</span>
-            <div className="flex-grow border-t border-white/10"></div>
-          </div>
-
-          <div className="space-y-4">
-            <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
-              <div className="flex items-center gap-2">
-                <GoogleIcon className="h-5 w-5"/>
-                Continue with Google
+        {formView === 'signin' ? (
+          <>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/20 bg-white/10">
+                <AppleIcon className="h-6 w-6 text-white/80" />
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-400" />
-            </Button>
-            <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
-              <div className="flex items-center gap-2">
-                <GithubIcon className="h-5 w-5"/>
-                Continue with GitHub
+              <h1 className="text-2xl font-bold text-white">NUTRI-TRACK</h1>
+              <p className="text-sm text-gray-400">Please enter your details to sign in.</p>
+            </div>
+
+            <form className="mt-8 space-y-4">
+              <div className="space-y-4">
+                <div className="relative">
+                  <Label htmlFor="email" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                  />
+                </div>
+                <div className="relative">
+                  <Label htmlFor="password" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                  />
+                </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-400" />
-            </Button>
-          </div>
-        </form>
-        
-        <div className="mt-8 text-center text-sm text-gray-400">
-          Don't have an account?{' '}
-          <a href="#" className="font-medium text-primary hover:underline">
-            Create Account
-          </a>
-        </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Checkbox id="remember" className="border-white/30 text-primary data-[state=checked]:bg-primary"/>
+                  <Label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-400">Remember me</Label>
+                </div>
+                <a href="#" className="text-sm text-primary hover:underline">Forgot Password?</a>
+              </div>
+
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/80">
+                Sign In
+              </Button>
+
+              <div className="flex items-center">
+                <div className="flex-grow border-t border-white/10"></div>
+                <span className="mx-4 flex-shrink text-xs text-gray-400">OR</span>
+                <div className="flex-grow border-t border-white/10"></div>
+              </div>
+
+              <div className="space-y-4">
+                <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
+                  <div className="flex items-center gap-2">
+                    <GoogleIcon className="h-5 w-5"/>
+                    Continue with Google
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-gray-400" />
+                </Button>
+                <Button variant="outline" className="w-full justify-between border-white/20 bg-white/5 hover:bg-white/10 hover:text-white">
+                  <div className="flex items-center gap-2">
+                    <GithubIcon className="h-5 w-5"/>
+                    Continue with GitHub
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-gray-400" />
+                </Button>
+              </div>
+            </form>
+            
+            <div className="mt-8 text-center text-sm text-gray-400">
+              Don't have an account?{' '}
+              <button onClick={() => setFormView('signup')} className="font-medium text-primary hover:underline">
+                Create Account
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/20 bg-white/10">
+                <AppleIcon className="h-6 w-6 text-white/80" />
+              </div>
+              <h1 className="text-2xl font-bold text-white">Create Account</h1>
+              <p className="text-sm text-gray-400">Please fill in the details to register.</p>
+            </div>
+
+            <form className="mt-8 space-y-4">
+              <div className="space-y-4">
+                <div className="relative">
+                  <Label htmlFor="fullname" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Full Name</Label>
+                  <Input
+                    id="fullname"
+                    type="text"
+                    placeholder="Enter your full name"
+                    className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                  />
+                </div>
+                <div className="relative">
+                  <Label htmlFor="email-signup" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
+                  <Input
+                    id="email-signup"
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                  />
+                </div>
+                <div className="relative">
+                  <Label htmlFor="password-signup" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Password</Label>
+                  <Input
+                    id="password-signup"
+                    type="password"
+                    placeholder="Create a password"
+                    className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                  />
+                </div>
+              </div>
+
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/80">
+                Sign Up
+              </Button>
+            </form>
+            
+            <div className="mt-8 text-center text-sm text-gray-400">
+              Already have an account?{' '}
+              <button onClick={() => setFormView('signin')} className="font-medium text-primary hover:underline">
+                Sign In
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </main>
   );
