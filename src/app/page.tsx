@@ -1,5 +1,5 @@
 'use client';
-import { ArrowRight, GithubIcon } from "lucide-react";
+import { ArrowRight, GithubIcon, LockIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -46,26 +46,39 @@ export default function Home() {
           <p className="text-sm text-gray-400">Please enter your details to sign in.</p>
         </div>
 
-        <form className="mt-8 space-y-6">
-          <div className="relative">
-            <Label htmlFor="email" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
-            <div className="flex">
+        <form className="mt-8 space-y-4">
+          <div className="space-y-4">
+            <div className="relative">
+              <Label htmlFor="email" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 rounded-r-none border-r-0 bg-white/5 pr-12 text-white placeholder:text-gray-500"
+                className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
               />
-              <Button type="submit" size="icon" className="rounded-l-none bg-primary hover:bg-primary/80">
-                <ArrowRight className="h-5 w-5" />
-              </Button>
+            </div>
+            <div className="relative">
+              <Label htmlFor="password" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+              />
             </div>
           </div>
           
-          <div className="flex items-center">
-            <Checkbox id="remember" className="border-white/30 text-primary data-[state=checked]:bg-primary"/>
-            <Label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-400">Remember me</Label>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Checkbox id="remember" className="border-white/30 text-primary data-[state=checked]:bg-primary"/>
+              <Label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-400">Remember me</Label>
+            </div>
+            <a href="#" className="text-sm text-primary hover:underline">Forgot Password?</a>
           </div>
+
+          <Button type="submit" className="w-full bg-primary hover:bg-primary/80">
+            Sign In
+          </Button>
 
           <div className="flex items-center">
             <div className="flex-grow border-t border-white/10"></div>
