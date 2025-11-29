@@ -26,6 +26,16 @@ const AppleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+const SeniorIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+    <path d="M12 11.5v5.5a1 1 0 0 0 1 1h1.5"/>
+    <path d="m14 13-1.5 6"/>
+    <path d="M10.5 11.5 9 20"/>
+    <path d="M18.5 11H16a1 1 0 0 0-1 1v4a1 1 0 0 1-1 1h-1"/>
+  </svg>
+);
+
 
 export default function Home() {
   const [formView, setFormView] = useState('signin');
@@ -232,7 +242,8 @@ export default function Home() {
                   </CardContent>
                 </Card>
                 <Card className="flex h-48 w-64 items-center justify-center border-none bg-black/50 shadow-lg">
-                  <CardContent className="p-0">
+                  <CardContent className="flex flex-col items-center gap-2 p-0">
+                    <SeniorIcon className="text-white" />
                     <h2 className="text-2xl font-bold text-white">SENIOR CITIZEN</h2>
                   </CardContent>
                 </Card>
