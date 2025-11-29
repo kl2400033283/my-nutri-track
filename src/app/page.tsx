@@ -119,6 +119,18 @@ export default function Home() {
     }
   };
 
+  const handleRegeneratePlan = async () => {
+    setIsGenerating(true);
+    try {
+      const plan = await generateMealPlan();
+      setGeneratedPlan(plan);
+    } catch (error) {
+      console.error("Failed to generate meal plan:", error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const handleGeneratedDialogClose = () => {
     setShowSuccessDialog(false);
     setGeneratedPlan(null);
@@ -270,27 +282,38 @@ export default function Home() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Generated Meal Plan</DialogTitle>
-                {generatedPlan && (
-                  <DialogDescription>
-                    <div className="space-y-2 text-left mt-4 max-h-96 overflow-y-auto">
-                      <p className="font-bold">Breakfast</p>
-                      <p>{generatedPlan.breakfast}</p>
-                      
-                      <p className="font-bold pt-2">Lunch</p>
-                      <p>{generatedPlan.lunch}</p>
+                {isGenerating ? (
+                  <div className="flex justify-center items-center p-10">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    <p className="ml-2">Generating new plan...</p>
+                  </div>
+                ) : (
+                  generatedPlan && (
+                    <DialogDescription>
+                      <div className="space-y-2 text-left mt-4 max-h-96 overflow-y-auto">
+                        <p className="font-bold">Breakfast</p>
+                        <p>{generatedPlan.breakfast}</p>
+                        
+                        <p className="font-bold pt-2">Lunch</p>
+                        <p>{generatedPlan.lunch}</p>
 
-                      <p className="font-bold pt-2">Dinner</p>
-                      <p>{generatedPlan.dinner}</p>
+                        <p className="font-bold pt-2">Dinner</p>
+                        <p>{generatedPlan.dinner}</p>
 
-                      <p className="font-bold pt-2">Snacks</p>
-                      <p>{generatedPlan.snacks}</p>
-                    </div>
-                  </DialogDescription>
+                        <p className="font-bold pt-2">Snacks</p>
+                        <p>{generatedPlan.snacks}</p>
+                      </div>
+                    </DialogDescription>
+                  )
                 )}
               </DialogHeader>
-              <DialogFooter>
+              <DialogFooter className="gap-2 sm:justify-center">
+                <Button onClick={handleRegeneratePlan} disabled={isGenerating}>
+                  {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Regenerate
+                </Button>
                 <DialogClose asChild>
-                  <Button onClick={handleGeneratedDialogClose}>Close</Button>
+                  <Button onClick={handleGeneratedDialogClose} variant="outline">Close</Button>
                 </DialogClose>
               </DialogFooter>
             </DialogContent>
@@ -526,5 +549,7 @@ export default function Home() {
     </>
   );
 }
+
+    
 
     
