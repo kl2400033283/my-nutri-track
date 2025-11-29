@@ -1,12 +1,10 @@
 'use client';
 import { useState } from "react";
 import { ArrowRight, GithubIcon } from "lucide-react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -26,7 +24,6 @@ const AppleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 
 export default function Home() {
-  const backgroundImage = PlaceHolderImages.find(img => img.id === 'fruits-background');
   const [formView, setFormView] = useState('signin');
 
   const handleSignUp = (e: React.FormEvent) => {
@@ -35,15 +32,6 @@ export default function Home() {
   };
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-6">
-       {backgroundImage && <Image
-        src={backgroundImage.imageUrl}
-        alt={backgroundImage.description}
-        fill
-        className="object-cover -z-10 animate-zoom-in-out"
-        data-ai-hint={backgroundImage.imageHint}
-      />}
-      <div className="absolute inset-0 bg-black/50 -z-10"></div>
       <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-black/20 p-8 shadow-2xl backdrop-blur-lg">
         {formView === 'signin' ? (
           <>
@@ -175,6 +163,5 @@ export default function Home() {
           </>
         )}
       </div>
-    </main>
   );
 }
