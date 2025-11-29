@@ -1,6 +1,6 @@
 'use client';
 
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Button } from "./ui/button";
@@ -23,10 +23,16 @@ export default function Navbar() {
       <Link href="/">
         <h1 className="text-xl font-bold text-white">NUTRI-TRACK</h1>
       </Link>
-      <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-white hover:bg-white/10">
-        <LogOut className="h-5 w-5" />
-        <span className="sr-only">Sign Out</span>
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+          <User className="h-5 w-5" />
+          <span className="sr-only">Profile</span>
+        </Button>
+        <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-white hover:bg-white/10">
+          <LogOut className="h-5 w-5" />
+          <span className="sr-only">Sign Out</span>
+        </Button>
+      </div>
     </header>
   );
 }
