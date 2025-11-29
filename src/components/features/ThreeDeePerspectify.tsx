@@ -40,7 +40,7 @@ export function ThreeDeePerspectify({ lookAway }: ThreeDeePerspectifyProps) {
       directionalLight.position.set(-2, -1, 3);
       scene.add(directionalLight);
 
-      // 3D Object (Head and Eye)
+      // 3D Object (Head and Eyes)
       const headGeometry = new THREE.IcosahedronGeometry(1, 2);
       const headMaterial = new THREE.MeshStandardMaterial({
         color: 0x4B0082,
@@ -50,25 +50,39 @@ export function ThreeDeePerspectify({ lookAway }: ThreeDeePerspectifyProps) {
       const head = new THREE.Mesh(headGeometry, headMaterial);
       scene.add(head);
 
-      const eyeGroup = new THREE.Group();
-      head.add(eyeGroup);
-      eyeGroup.position.z = 0.8;
-
       const eyeSocketGeometry = new THREE.SphereGeometry(0.3, 16, 16);
       const eyeSocketMaterial = new THREE.MeshBasicMaterial({ color: 0x300052 });
-      const eyeSocket = new THREE.Mesh(eyeSocketGeometry, eyeSocketMaterial);
-      eyeGroup.add(eyeSocket);
       
       const eyeGeometry = new THREE.SphereGeometry(0.25, 32, 32);
       const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.1 });
-      const eye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-      eyeSocket.add(eye);
-      
+
       const pupilGeometry = new THREE.SphereGeometry(0.1, 32, 32);
       const pupilMaterial = new THREE.MeshBasicMaterial({ color: 0x050505 });
-      const pupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
-      pupil.position.z = 0.22;
-      eye.add(pupil);
+      
+      const createEye = () => {
+        const eyeGroup = new THREE.Group();
+        
+        const eyeSocket = new THREE.Mesh(eyeSocketGeometry, eyeSocketMaterial);
+        eyeGroup.add(eyeSocket);
+        
+        const eye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        eyeSocket.add(eye);
+        
+        const pupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+        pupil.position.z = 0.22;
+        eye.add(pupil);
+
+        return { eyeGroup, pupil };
+      }
+
+      const { eyeGroup: leftEyeGroup, pupil: leftPupil } = createEye();
+      leftEyeGroup.position.set(-0.4, 0.1, 0.75);
+      head.add(leftEyeGroup);
+      
+      const { eyeGroup: rightEyeGroup, pupil: rightPupil } = createEye();
+      rightEyeGroup.position.set(0.4, 0.1, 0.75);
+      head.add(rightEyeGroup);
+
 
       // Mouse tracking
       const mousePosition = new THREE.Vector2();
@@ -96,7 +110,8 @@ export function ThreeDeePerspectify({ lookAway }: ThreeDeePerspectifyProps) {
         head.quaternion.slerp(targetQuaternion, 0.08);
         
         const eyeTarget = new THREE.Vector3(mousePosition.x * 2, mousePosition.y * 2, 1);
-        pupil.lookAt(eyeTarget);
+        leftPupil.lookAt(eyeTarget);
+        rightPupil.lookAt(eyeTarget);
 
         const elapsedTime = clock.getElapsedTime();
         head.position.y = Math.sin(elapsedTime * 1.5) * 0.05;
