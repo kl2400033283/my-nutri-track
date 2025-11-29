@@ -1,0 +1,63 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the Perspectify application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's username."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user account was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "email",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information. Path-based ownership ensures only the authenticated user can access their data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique ID of the user. This MUST match the Firebase Auth UID."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to be simple and secure, focusing on user data. User data is stored in a path-based structure under `/users/{userId}`. This structure facilitates straightforward ownership-based security rules. The structure ensures Authorization Independence as the authorization check only relies on `request.auth.uid` and the path. This eliminates the need for `get()` calls in security rules and allows for atomic operations. Since all documents in the `users` collection share the same security requirements (only the authenticated user can access their own data), Structural Segregation is achieved. QAPs are supported because listing operations on `/users/{userId}` are secure as they are always scoped to the authenticated user's ID."
+  }
+}

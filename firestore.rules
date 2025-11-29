@@ -1,0 +1,119 @@
+/**
+ * # Firestore Security Rules
+ *
+ * ## Core Philosophy
+ * This ruleset enforces a strict user-ownership model. All user data is private
+ * and can only be accessed by the authenticated user who owns it. The default
+ * security posture is to deny all access unless explicitly granted.
+ *
+ * ## Data Structure
+ * The data is organized hierarchically with all user-specific information stored
+ * under the top-level `/users` collection. Each user has a single document,
+ * where the document ID is the user's unique Firebase Authentication UID.
+ *   - `/users/{userId}`: Contains the public profile and private data for a user.
+ *
+ * ## Key Security Decisions
+ * - **No User Listing:** Listing documents in the top-level `/users` collection
+ *   is explicitly disallowed to protect user privacy and prevent enumeration attacks.
+ *   Users can only fetch their own user document directly by its ID.
+ * - **Path-Based Security:** Authorization is based on the document path, comparing
+ *   the `{userId}` wildcard to the authenticated user's UID (`request.auth.uid`).
+ *   This is highly performant as it avoids extra database reads (`get()` calls).
+ * - **Data Integrity:** On creation, the user document's internal `id` field must
+ *   match the document ID (`userId`). This field is then enforced as immutable
+ *   to guarantee the link between the document and its owner can never be broken.
+ *
+ * ## Denormalization for Authorization
+ * The current structure is optimized for authorization independence. The user's
+ * UID is used as the document key, which is the most direct and performant way
+ * to link data to a user, requiring no denormalization for ownership checks.
+ *
+ * ## Structural Segregation
+ * All user data is contained within the `/users/{userId}` path. This provides a
+ * clear separation of data, ensuring that security rules for one user's data
+ * cannot inadvertently affect another's.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =====================================================================
+    // Helper Functions
+    // =====================================================================
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the requesting user's UID matches the provided userId.
+     * This is the foundation of the user-ownership model.
+     *
+     * @param userId The user ID to check against the request's auth UID.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks if the document being accessed already exists in Firestore.
+     * Crucial for protecting against writes to non-existent documents.
+     */
+    function isExistingDoc() {
+      return resource != null;
+    }
+
+    /**
+     * Combines ownership and existence checks for state-changing operations
+     * like update and delete.
+     *
+     * @param userId The user ID of the document owner.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && isExistingDoc();
+    }
+
+    /**
+     * On create, validates that the document's internal 'id' field
+     * matches the document's ID from the path ({userId}).
+     * This establishes an immutable link between the data and the owner.
+     *
+     * @param userId The document ID from the path wildcard.
+     */
+    function hasValidUserIdOnCreate(userId) {
+      return request.resource.data.id == userId;
+    }
+
+    /**
+     * On update, ensures that the 'id' field within the user document
+     * cannot be changed. This preserves the critical link to the owner.
+     */
+    function isUserIdImmutable() {
+      return request.resource.data.id == resource.data.id;
+    }
+
+    // =====================================================================
+    // Collection Rules
+    // =====================================================================
+
+    /**
+     * @description Manages user profile documents.
+     * @path /users/{userId}
+     * @allow (create) A new user can create their own user document.
+     * @allow (get, update, delete) An authenticated user can read, update, or delete their own document.
+     * @deny (list) No user, authenticated or not, can list all documents in the /users collection.
+     * @deny (get) A user cannot read another user's document.
+     * @principle Restricts access to a user's own data tree and enforces relational integrity.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // CRITICAL: Prevents listing all users in the application.
+      allow create: if isOwner(userId) && hasValidUserIdOnCreate(userId);
+      allow update: if isExistingOwner(userId) && isUserIdImmutable();
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
