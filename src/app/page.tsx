@@ -10,10 +10,11 @@ import { useRouter } from 'next/navigation';
 import { Textarea } from "@/components/ui/textarea";
 import { generateMealPlan, GenerateMealPlanOutput } from '@/ai/flows/generate-meal-plan-flow';
 import { useAuth, useFirestore } from '@/firebase';
-import { initiateAnonymousSignIn, initiateEmailSignIn, initiateEmailSignUp, initiateGoogleSignIn } from '@/firebase/non-blocking-login';
+import { initiateEmailSignIn, initiateEmailSignUp, initiateGoogleSignIn } from '@/firebase/non-blocking-login';
 import { useUser } from "@/firebase/provider";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { collection } from 'firebase/firestore';
+import { toast } from "@/hooks/use-toast";
 
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -60,6 +61,7 @@ export default function Home() {
   const { user, isUserLoading } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [customPlan, setCustomPlan] = useState({ breakfast: '', lunch: '', snacks: '', dinner: '' });
 
   useEffect(() => {
@@ -73,6 +75,14 @@ export default function Home() {
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Sign-Up Failed",
+        description: "Passwords do not match.",
+      });
+      return;
+    }
     initiateEmailSignUp(auth, email, password);
   };
 
@@ -255,7 +265,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="relative">
-                    <Label htmlFor="password-signup" className="absolute -top_2 left_2 inline_block bg_transparent px_1 text_xs font_medium text_gray_400 backdrop_blur_sm">Password</Label>
+                    <Label htmlFor="password-signup" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Password</Label>
                     <Input
                       id="password-signup"
                       type="password"
@@ -263,6 +273,17 @@ export default function Home() {
                       className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="relative">
+                    <Label htmlFor="confirm-password-signup" className="absolute -top-2 left-2 inline-block bg-transparent px-1 text-xs font-medium text-gray-400 backdrop-blur-sm">Confirm Password</Label>
+                    <Input
+                      id="confirm-password-signup"
+                      type="password"
+                      placeholder="Confirm your password"
+                      className="w-full bg-white/5 pr-4 text-white placeholder:text-gray-500"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </div>
                 </div>
