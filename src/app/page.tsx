@@ -92,6 +92,14 @@ export default function Home() {
     router.push('/lunch');
   };
 
+  const handleSnacksClick = () => {
+    router.push('/snacks');
+  };
+
+  const handleDinnerClick = () => {
+    router.push('/dinner');
+  };
+
   if (!isClient) {
     return null;
   }
@@ -337,13 +345,13 @@ export default function Home() {
                     <h2 className="text-xl font-bold">Lunch</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleSnacksClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Cookie className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Snacks</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleDinnerClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Utensils className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Dinner</h2>
@@ -379,13 +387,13 @@ export default function Home() {
                     <h2 className="text-xl font-bold">Lunch</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleSnacksClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Cookie className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Snacks</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleDinnerClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Utensils className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Dinner</h2>
@@ -421,13 +429,13 @@ export default function Home() {
                     <h2 className="text-xl font-bold">Lunch</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleSnacksClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Cookie className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Snacks</h2>
                   </CardContent>
                 </Card>
-                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg">
+                <Card className="flex h-48 w-48 items-center justify-center border-none bg-card shadow-lg cursor-pointer" onClick={handleDinnerClick}>
                   <CardContent className="flex flex-col items-center gap-2 p-0 text-card-foreground">
                     <Utensils className="h-10 w-10" />
                     <h2 className="text-xl font-bold">Dinner</h2>
