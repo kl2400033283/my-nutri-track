@@ -45,6 +45,7 @@ export default function Home() {
   const [showContentBlocks, setShowContentBlocks] = useState(false);
   const [showMealPlannerDialog, setShowMealPlannerDialog] = useState(false);
   const [showCustomPlannerDialog, setShowCustomPlannerDialog] = useState(false);
+  const [showChildDialog, setShowChildDialog] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
@@ -305,6 +306,23 @@ export default function Home() {
             </DialogContent>
           </Dialog>
 
+          <Dialog open={showChildDialog} onOpenChange={setShowChildDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Children's Nutrition</DialogTitle>
+                <DialogDescription>
+                  What would you like to see in this pop-up?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+
           {showContentBlocks && (
             <div className="flex flex-col items-center gap-6">
               
@@ -319,14 +337,15 @@ export default function Home() {
               </Card>
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                <Link href="/child">
-                  <Card className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64">
-                    <CardContent className="flex flex-col items-center gap-2 p-0">
-                      <Baby className="h-12 w-12 text-white" />
-                      <h2 className="text-2xl font-bold text-white">CHILD</h2>
-                    </CardContent>
-                  </Card>
-                </Link>
+                <Card 
+                  className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64"
+                  onClick={() => setShowChildDialog(true)}
+                >
+                  <CardContent className="flex flex-col items-center gap-2 p-0">
+                    <Baby className="h-12 w-12 text-white" />
+                    <h2 className="text-2xl font-bold text-white">CHILD</h2>
+                  </CardContent>
+                </Card>
                 <Link href="/adult">
                   <Card className="flex h-56 w-56 cursor-pointer items-center justify-center border-none bg-black/50 shadow-lg sm:h-64 sm:w-64">
                     <CardContent className="flex flex-col items-center gap-2 p-0">
